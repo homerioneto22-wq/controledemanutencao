@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestão de Equipamentos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <div class="brand">
+        <div class="brand-icon">⚡</div>
+        <div class="brand-text">
+          <div class="brand-title">Gestão de Equipamentos</div>
+          <div class="brand-subtitle" id="today"></div>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="btn btn-ghost" id="btnExport">
+          ⬇️ Exportar Excel
+        </button>
+        <button class="btn btn-primary" id="btnAdd">
+          ➕ Nova Atividade
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main">
+    <section class="stats" id="stats"></section>
+
+    <section class="card">
+      <div class="card-header">
+        <div class="search-row">
+          <div class="search">
+            <span class="icon">🔎</span>
+            <input id="search" type="text" placeholder="Buscar por equipe, equipamento, atividade, subestação..." />
+          </div>
+
+          <button class="btn btn-ghost" id="btnToggleFilters">
+            🧰 Filtros
+          </button>
+        </div>
+
+        <div class="filters hidden" id="filters">
+          <div class="field">
+            <label>Data</label>
+            <input id="filterDate" type="date" />
+          </div>
+
+          <div class="field">
+            <label>Status</label>
+            <select id="filterStatus">
+              <option value="todos">Todos</option>
+              <option value="pendente">Pendente</option>
+              <option value="em_andamento">Em Andamento</option>
+              <option value="concluido">Concluído</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Equipe</label>
+            <select id="filterEquipe">
+              <option value="todas">Todas</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>&nbsp;</label>
+            <button class="btn btn-danger" id="btnClearFilters">✖ Limpar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Equipe</th>
+              <th>Integrantes</th>
+              <th>Subestação</th>
+              <th>Alimentador</th>
+              <th>Equipamento</th>
+              <th>Atividade Programada</th>
+              <th>Horário Previsto</th>
+              <th>Observação</th>
+              <th>Status</th>
+              <th class="actions-col">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <h2>Observações Gerais</h2>
+        <p>Essas observações ficam salvas no seu navegador (localmente).</p>
+      </div>
+      <div class="card-body">
+        <textarea id="observacoes" rows="5" placeholder="Digite aqui..."></textarea>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL -->
+  <div class="modal hidden" id="modal">
+    <div class="modal-backdrop" data-close="1"></div>
+    <div class="modal-panel">
+      <div class="modal-head">
+        <div>
+          <div class="modal-title" id="modalTitle">Nova Atividade</div>
+          <div class="modal-subtitle">Preencha os dados abaixo</div>
+        </div>
+        <button class="btn btn-ghost" data-close="1">✖</button>
+      </div>
+
+      <form id="form" class="modal-body">
+        <div class="grid">
+          <div class="field">
+            <label>Data</label>
+            <input type="date" id="f_data" required />
+          </div>
+
+          <div class="field">
+            <label>Equipe</label>
+            <input type="text" id="f_equipe" required />
+          </div>
+
+          <div class="field">
+            <label>Integrantes</label>
+            <input type="text" id="f_integrantes" />
+          </div>
+
+          <div class="field">
+            <label>Subestação</label>
+            <input type="text" id="f_subestacao" />
+          </div>
+
+          <div class="field">
+            <label>Alimentador</label>
+            <input type="text" id="f_alimentador" />
+          </div>
+
+          <div class="field">
+            <label>Equipamento</label>
+            <input type="text" id="f_equipamento" />
+          </div>
+
+          <div class="field span-2">
+            <label>Atividade Programada</label>
+            <input type="text" id="f_atividadeProgramada" />
+          </div>
+
+          <div class="field">
+            <label>Horário Previsto</label>
+            <input type="text" id="f_horarioPrevisto" placeholder="Ex: 10:00 às 12:00" />
+          </div>
+
+          <div class="field">
+            <label>Status</label>
+            <select id="f_status">
+              <option value="pendente">Pendente</option>
+              <option value="em_andamento">Em Andamento</option>
+              <option value="concluido">Concluído</option>
+            </select>
+          </div>
+
+          <div class="field span-2">
+            <label>Observação</label>
+            <input type="text" id="f_observacao" placeholder="Ex: NDS - 45" />
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" data-close="1">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
